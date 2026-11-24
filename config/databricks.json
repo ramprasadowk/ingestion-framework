@@ -1,0 +1,10 @@
+{
+  "ingestion_config": "config/postgres.json",
+  "catalog": "rental_demo",
+  "bronze_schema": "bronze",
+  "control_schema": "ingestion_control",
+  "fetch_size": 5000,
+  "jdbc_sources": {
+    "rental_system": "RENTAL"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "target_database": "runtime/bronze.db",
+  "sources": {
+    "rental_system": {
+      "kind": "postgres",
+      "dsn_env": "PG_SOURCE_DSN"
+    }
+  },
+  "tables": [
+    {
+      "name": "bronze_depots",
+      "source": "rental_system",
+      "table": "depots",
+      "columns": [
+        "depot_id",
+        "depot_name",
+        "region"
+      ],
+      "keys": [
+        "depot_id"
+      ],
+      "mode": "full",
+      "schema": "rental_demo"
+    },
+    {
+      "name": "bronze_equipment",
+      "source": "rental_system",
+      "table": "equipment",
+      "columns": [
+        "equipment_id",
+        "equipment_name",
+        "daily_rate",
+        "change_version"
+      ],
+      "keys": [
+        "equipment_id"
+      ],
+      "mode": "incremental",
+      "watermark": "change_version",
+      "lookback": 0,
+      "max_rows": 50000,
+      "retries": 1,
+      "schema": "rental_demo"
+    },
+    {
+      "name": "bronze_rental_orders",
+      "source": "rental_system",
+      "table": "rental_orders",
+      "columns": [
+        "rental_id",
+        "equipment_id",
+        "depot_id",
+        "rental_days",
+        "change_version"
+      ],
+      "keys": [
+        "rental_id"
+      ],
+      "mode": "incremental",
+      "watermark": "change_version",
+      "lookback": 0,
+      "schema": "rental_demo"
+    }
+  ]
+}
